@@ -87,7 +87,9 @@ def calculate_d1_d2(h1, h2, d):
 def multipath_path_loss(Gt, Gr, lambda_, d1, d2, f):
     phi1 = -2 * np.pi * f * d1 / c
     phi2 = -2 * np.pi * f * d2 / c
-    return 10 * np.log10(Gt * Gr * (lambda_ / (4 * np.pi))**2 * (1/d1 * np.abs(np.exp(1j * phi1)) - 1/d2 * np.abs(np.exp(1j * phi2)))**2)
+    value1 = (1/d1) * np.exp(1j * phi1)
+    value2 = (1/d2) * np.exp(1j * phi2)
+    return 10 * np.log10(Gt * Gr * (lambda_ / (4 * np.pi))**2 * np.abs(value1 - value2) **2)
 
 
 distances_1 = np.arange(1, 100.25, 0.25)
@@ -128,7 +130,7 @@ plt.subplot(1, 2, 2)
 plt.plot(distances_2, loss_1_b, label='900 MHz')
 plt.plot(distances_2, loss_2_b, label='2400 MHz')
 plt.title('Spadek mocy sygnału (1m do 10km)')
-plt.xlabel('Odległość (km)')
+plt.xlabel('Odległość (m)')
 plt.ylabel('Spadek mocy (dB)')
 plt.legend()
 plt.grid(True)
